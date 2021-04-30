@@ -178,7 +178,7 @@
 
     <?php if(!empty($_SESSION['success'])):?>
     <script type="text/javascript">
-         alertify.success('$_SESSION['success']');
+         alertify.success('<?=$_SESSION['success']?>');
     </script>
 
   <?php endif;?>
