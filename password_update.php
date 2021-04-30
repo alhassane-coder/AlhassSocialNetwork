@@ -16,9 +16,9 @@ if(isset($_POST['change_password'])){
 		         	$errors[]='<i class="fas fa-exclamation-triangle"></i> Nouveau mot de passe  trop court! (Minimum 6 caractères)';
 
 		   } else {
-	               
+  
 		             if($new_password != $new_password_confirm){
-		                	
+
 		                	$errors[]='<i class="fas fa-exclamation-triangle"></i> Les deux mots de passes ne concordent pas !';
 		             }
 		          }
@@ -28,12 +28,12 @@ if(isset($_POST['change_password'])){
 
 			            //Si tout est bon on verifie l'authenticité du mot de passe en bdd
 
-			            $q= $db->prepare('SELECT password as hashed_password FROM users WHERE id=? ');
+			            $q = $db->prepare('SELECT password as hashed_password FROM users WHERE id=? ');
 
 			            $q->execute([get_session('user_id')]);
 
 			            $passwordHasBeenFound=$q->rowCount();
-         
+
 			            $data=$q->fetch(PDO::FETCH_OBJ);
 
 
@@ -48,11 +48,10 @@ if(isset($_POST['change_password'])){
                                  'id'=>get_session('user_id')
 
 			            	]);
-                             
+
                              if($success){
 
                              	$_SESSION['success']="<i class=\"fas fa-check-circle\"></i>  Mot de passe changée avec succès";// Variable session pour afficher un succès avec alertify
-
 
                             	redirect('profile?id='.get_session('user_id'));
 
@@ -70,8 +69,8 @@ if(isset($_POST['change_password'])){
 		            } else {
 		            	save_input_data();
 		            }
-	} else { 
-	    	
+	} else {
+
 	    	$errors[] = '<i class="fas fa-exclamation-triangle"></i> Veuillez SVP remplir tous les champs!';
 	    	save_input_data();
 	    }

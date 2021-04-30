@@ -16,7 +16,7 @@
                           <div class="row">
 
 	                            <div class="col-md-4 col-xs-5">
-	                            	<img width="130" class="img-circle" src="<?= $user->avatar 
+	                            	<img width="130" class="img-circle" src="<?= $user->avatar
 	                            	? $user->avatar : get_avatar_url($user->email,'130') ?>" alt="Image de profile de <?= escape($user->pseudo);?>">
 
 	                            </div>
@@ -29,21 +29,21 @@
 				             		 	</form>
 				             		 	<h4 class="small" style="color: red">(Taille maximale: 5Mo;)</h4>
 				             		 	<h4 class="small" style="color: red">Extensions supportées: jpg, jpeg, png, svg, gif</h4>
-                                  
+
                                    </div>
                               </div>
-                             
-                          </div>
-                          <div class="row">
 
-							<div class="col-md-5">
+                          </div>
+                      <div class="row">
+
+						  	<div class="col-md-5">
                             	  <strong><?= escape($user->pseudo).' '.escape($user->name);?></strong><br>
                             	  <a href="mailto:<?= escape($user->email);?>"><?= escape($user->email);?>
-                            	  	
-                            	  </a>
-                            </div>
 
-                          </div>
+                            	  </a>
+                        	</div>
+
+                      </div>
 
 
 					  </div>
@@ -164,55 +164,55 @@
 <!-- SCRIPTS-->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    
-    
+
+
     <script src="assets/js/boostrap.min.js"></script>
     <script src="librairies/Parsley/parsley.min.js"></script>
-    <script src="librairies/Parsley/i18n/fr.js"></script>    
-    <script src="librairies/timeago/jquery.timeago.js"></script>    
+    <script src="librairies/Parsley/i18n/fr.js"></script>
+    <script src="librairies/timeago/jquery.timeago.js"></script>
     <script src="librairies/timeago/jquery.timeago.fr.js"></script>
      <script src="librairies/alertify/alertify.min.js"></script>
-    
+
    <!--On montre une alerte de succès si l'image a été uplodé -->
 
-  <?php if(!empty($_SESSION['alert'])):?> 
+  <?php if(!empty($_SESSION['alert'])):?>
 		<script type="text/javascript">
 		     alertify.success('<i class="fas fa-check-circle"></i> Votre image a été changée avec success!');
 		</script>
-  
+
   <?php endif;?>
   <?php $_SESSION['alert']='';?>
 
 <!--   On affiche une alerte d'echec si echec -->
 
-<?php if(!empty($_SESSION['error'])):?> 
+<?php if(!empty($_SESSION['error'])):?>
 		<script type="text/javascript">
 		     alertify.error('<?= $_SESSION['error'] ?>');
 		</script>
-  
+
   <?php endif;?>
   <?php $_SESSION['error']='';?>
 
 <!-- On affiche une alerte de taille si taille trop grande  -->
 
-  <?php if(!empty($_SESSION['size_error'])):?> 
+  <?php if(!empty($_SESSION['size_error'])):?>
 		<script type="text/javascript">
 		     alertify.error('<?= $_SESSION['size_error'] ?>');
 		</script>
-  
+
   <?php endif;?>
   <?php $_SESSION['size_error']='';?>
 
 
   <!-- On affiche une alerte si le type est pas supporté -->
 
-  <?php if(!empty($_SESSION['file_type_error'])):?> 
+  <?php if(!empty($_SESSION['file_type_error'])):?>
 		<script type="text/javascript">
 		     alertify.error('<?= $_SESSION['file_type_error']?>');
 		</script>
-  
+
   <?php endif;?>
   <?php $_SESSION['file_type_error']='';?>
-    
-    
+
+
 </div>

@@ -2,12 +2,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap');
 
     /************
-      NAV 
+      NAV
       CODE  CSS
 
-   ************/
-      body { background: rgba(2, 12, 38,0.4) !important; 
-      } 
+    ***********/
+      body { background: rgba(2, 12, 38,0.4) !important;
+      }
                 /* navbar */
         .navbar-default {
             background-color: rgb(0, 174, 255) !important;
@@ -34,20 +34,20 @@
         }
         .well.bio{color: white !important;
           background-color: #337ab7 !important;border-color: #337ab7 !important;border-radius:0px!important;}
-    
+
 
     /************
-      END NAV 
+      END NAV
       CODE  CSS
 
    ************/
 
     /************
-      MAIN 
+      MAIN
       CODE  CSS
 
    ************/
-  
+
 
 textarea{resize: none !important;}
 
@@ -69,9 +69,8 @@ body
 
 		************/
 
-input.parsley-success,
-select.parsley-success,
-textarea.parsley-success {
+
+{
   color: #468847;
   background-color: #DFF0D8;
   border: 1px solid #D6E9C6;
@@ -113,7 +112,7 @@ textarea.parsley-error {
 	 ************/
 
     /************
-     END MAIN 
+     END MAIN
       CODE  CSS
 
    ************/
@@ -124,7 +123,7 @@ textarea.parsley-error {
 
 
     /************
-      SHARE 
+      SHARE
       CODE  CSS
 
    ************/
@@ -143,8 +142,6 @@ textarea.parsley-error {
   overflow: hidden;
   min-height: 400px;
   padding: 10px;
-
-  
 
 }
 #main-content-share-code{
@@ -181,7 +178,7 @@ position: relative;
   overflow: scroll;
   min-height: 800px;
 
-  
+
 
 }
 
@@ -198,7 +195,7 @@ position: relative;
 	top: 10px;
 	right: 10px;
 }
-	
+
 
 #code-body{
 	background:#000 !important;
@@ -210,7 +207,7 @@ position: relative;
 
 
    /************
-     END  SHARE 
+     END  SHARE
       CODE  CSS
 
    ************/
@@ -219,7 +216,7 @@ position: relative;
   3 * http://studiostyl.es/schemes/son-of-obsidian by
   4 * Alex Ford of CodeTunnel:
   5 * http://CodeTunnel.com/blog/post/71/google-code-prettify-obsidian-theme
-*/ 
+*/
  .str
  {
      color: #EC7600;
@@ -265,25 +262,25 @@ position: relative;
 {
 
     color: purple;
- 
+
 }
- 
+
  pre.prettyprint
- 
+
  {
- 
+
      border: 0px solid #888;
- 
+
 }
- 
+
  ol.linenums
- 
+
  {
- 
+
      margin-top: 0;
- 
+
     margin-bottom: 0;
- 
+
 }
  .prettyprint
   {
@@ -294,12 +291,12 @@ position: relative;
     color: #555;
     list-style-type: decimal;
  }
- li.L1, li.L3, li.L5, li.L7, li.L9 
+ li.L1, li.L3, li.L5, li.L7, li.L9
  {
      background: #111;
  }
  @media print{
- 
+
      .str
      {
          color: #060;
@@ -349,7 +346,6 @@ position: relative;
 
 /* Stylisation style users */
 .users{
-
   margin-bottom: 3em;
 }
 .user-bloc{
@@ -362,15 +358,12 @@ position: relative;
 .post-status{
    border: 1px solid #337ab7;
    background: #fff;
-
-
 }
 .post-status textarea{
   border: none;
 }
 .post-status textarea:focus{
   box-shadow: none;
-
 }
 
 .status-post-submit{
@@ -378,8 +371,6 @@ position: relative;
   padding: 0.5em 1em;
   margin-bottom: 10px;
   overflow: hidden;
-
-
 }
 .status-post-submit .btn{
   float: right;

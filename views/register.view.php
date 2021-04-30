@@ -27,7 +27,7 @@
               				    <label class="control-label" for="name">Nom:</label>
               				    <input type="text" class="form-control" id="name" value="<?= get_input('name') ?>"name="name" required="required" >
               				    
-              		   </div>
+              		     </div>
                          
                           <!-- Pseudo  Field -->
                        	 
@@ -35,7 +35,7 @@
               				    <label class="control-label" for="pseudo">Prénom:</label>
               				    <input type="text" class="form-control" id="pseudo" value="<?= get_input('pseudo') ?>" name="pseudo" required="required" data-parsley-minlength="3" data-parsley-trigger="change">
               				    
-              		   </div>
+              		    </div>
 
                        	
                            <!-- Email Field -->

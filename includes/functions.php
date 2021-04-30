@@ -1,17 +1,17 @@
 <?php
 
-// Recupère les informations en session; 
+// Recupère les informations en session;
 
 if(!function_exists('get_session')){
-	
+
 	function get_session($key){
 		if($key){
 			return !empty($_SESSION[$key])
-         	
+
          	? escape($_SESSION[$key])
-         	
+
          	: null;
-  
+
 		}
 	}
 
@@ -24,7 +24,7 @@ if(!function_exists('get_session')){
 
 
 if(!function_exists('ceil_count')){
- 
+
  function ceil_count($table,$field,$value){
 
  	global $db;
@@ -39,18 +39,18 @@ if(!function_exists('ceil_count')){
 }
 
 
-//Systeme de remember me securisé 
+//Systeme de remember me securisé
 
 if(!function_exists('remember_me')){
-	
+
 	function remember_me($user_id){
 
  		//On genere un token de manière aleatoire
-          
+
           $token=openssl_random_pseudo_bytes(24);
-          
-		// Générer un selector de manière aleatoire tant qu'elle existe donc 
-		//  veiller à ce qu'elle soit unique;
+
+		// Générer un selector de manière aleatoire tant qu'elle existe donc
+		//  veuiller à ce qu'elle soit unique;
          do {
 
          	$selector = openssl_random_pseudo_bytes(9);
@@ -62,9 +62,9 @@ if(!function_exists('remember_me')){
          global $db;
 
          $q = $db->prepare('INSERT INTO auth_tokens(expires, selector , user_id , token) VALUES(DATE_ADD(NOW(), INTERVAl 14 DAY) , :selector , :user_id, :token)');
-        
+
          $q->execute([
-         
+
           'selector'=>$selector,
           'user_id'=>$user_id,
           'token'=>hash('sha256', $token)
@@ -80,7 +80,7 @@ if(!function_exists('remember_me')){
           	 null,
           	 null,
           	 true,
-          	 false);	
+          	 false);
     }
 
 }
@@ -88,7 +88,7 @@ if(!function_exists('remember_me')){
 // Auto login pour le connecter automatiquement si le cookie existe
 
 if(!function_exists('auto_login')){
-		  
+
   function auto_login(){
 
 		  global $db;
@@ -97,10 +97,10 @@ if(!function_exists('auto_login')){
 		if(!empty($_COOKIE['auth'])){
 
 			//On recupère les deux valeurs concaténées
-		 
+
 			$split = explode(':',$_COOKIE['auth']);
 
-			// S'assurer qu'on aura que deux elements 
+			// S'assurer qu'on aura que deux elements
 
 			if(count($split) != 2){
 
@@ -112,36 +112,36 @@ if(!function_exists('auto_login')){
 			$token = $split[1];
 
 			//On pouvait faire au lieu de la ligne precedente
-			// Cela reviendrai a la meme chose 
+			// Cela reviendrai a la meme chose
 
 			//  list($selector,$token) = $split;
 
-			//On recupère les enregistrements en base de donnée 
+			//On recupère les enregistrements en base de donnée
 			//oû selector = $selector;
 
 			$q = $db->prepare('SELECT auth_tokens.user_id,auth_tokens.token,users.pseudo,users.email,users.avatar
 				              FROM auth_tokens
-						 	  LEFT JOIN users 
-			                  ON auth_tokens.user_id=users.id 
+						 	  LEFT JOIN users
+			                  ON auth_tokens.user_id=users.id
 							  WHERE selector = ?  AND expires >= CURDATE()');
 
 			$q->execute([base64_decode($selector) ]);
 
 			$data = $q->fetch(PDO::FETCH_OBJ);
-			
+
 
 			if($data){
 
-				//Si tout est bon on compare les tokens 
+				//Si tout est bon on compare les tokens
 				if(hash_equals($data->token,hash('sha256', base64_decode($token)))){
 
 					// On Sauvegarde ses informations en sessions
 					session_regenerate_id(true);
 
 						$_SESSION['user_id']= $data->user_id;
-			            $_SESSION['pseudo']= $data->pseudo;
-			            $_SESSION['email']= $data->email;
-			            $_SESSION['avatar']=$data->avatar;
+			       $_SESSION['pseudo']= $data->pseudo;
+			       $_SESSION['email']= $data->email;
+            $_SESSION['avatar']=$data->avatar;
 
 
 			        return true;
@@ -152,10 +152,10 @@ if(!function_exists('auto_login')){
 
 			}
 
-        }
+    }
 
         return false;
-  
+
    }
 
 
@@ -163,16 +163,16 @@ if(!function_exists('auto_login')){
 
 //Redirection de l'utilisateur sur la page desirée lorsqu'il n'est pas connectée;
 if(!function_exists('redirect_friendly')){
-	
+
 	function redirect_friendly($default_url){
 		if($_SESSION['forwading_url']){
-		
+
             $url = $_SESSION['forwading_url'];
 
 		} else{
 
 			$url = $default_url;
-			
+
 		}
 		$_SESSION['forwading_url']=null;
 		redirect($url);
@@ -183,7 +183,7 @@ if(!function_exists('redirect_friendly')){
 
  //Filtre les données  saisies par l'utilisateur
 if(!function_exists('escape')){
-	
+
 	function escape($string){
 		if($string){
 			return htmlspecialchars($string);
@@ -203,17 +203,17 @@ if(!function_exists('not_empty'))
 			if(count($fields) != 0)
 			{
 				foreach ($fields as $field) {
-					
+
 					if(empty($_POST[$field]) || trim($_POST[$field]) == ""){
-		               
+
 		             return false;
 
 			       }
-			   
+
 			    }
 			    return true;
-			} 
- 
+			}
+
 	    }
 
   }
@@ -221,7 +221,7 @@ if(!function_exists('not_empty'))
 // Verifie si le pseudo et l'email sont pas déja dans notre base de donnée
 
 if(!function_exists('is_already_in_use')){
-	
+
 	function is_already_in_use($field, $value, $table){
 
 		  global $db;
@@ -229,7 +229,7 @@ if(!function_exists('is_already_in_use')){
 		  $q = $db->prepare("SELECT id FROM $table WHERE $field = ?");
 
 		  $q->execute([$value]);
-		  
+
 		  $count = $q->rowCount();
 
 		  $q->closeCursor();
@@ -242,17 +242,17 @@ if(!function_exists('is_already_in_use')){
 
 
 
-// Affichage de message flash 
+// Affichage de message flash
 
 if(!function_exists('set_flash')){
 
 	function set_flash($message,$type='info'){
-		
+
 		$_SESSION['notification']['message']=$message;
 		$_SESSION['notification']['type']=$type;
 
 	}
-	
+
 }
 
 // Redirige l'utilisateur sur la page donnée en paramètre
@@ -260,7 +260,7 @@ if(!function_exists('set_flash')){
 
 if(!function_exists('redirect')){
 	function redirect($page){
-		
+
 		header('Location:'.$page);
 		exit();
 	}
@@ -269,7 +269,7 @@ if(!function_exists('redirect')){
 // Stocke les inputs du formualaire de manière temporaire  en session
 
 if(!function_exists('save_input_data')){
-	
+
 	function save_input_data(){
       foreach ($_POST as $key => $value) {
       	if(strpos($key, 'password')==false){
@@ -278,7 +278,7 @@ if(!function_exists('save_input_data')){
 
       	}
 
-      	
+
       }
 	}
 }
@@ -286,23 +286,23 @@ if(!function_exists('save_input_data')){
 //Recupère les inputs du formualaire stockés de manière temporaire  en session
 
 if(!function_exists('get_input')){
-	
+
 	function get_input($key){
-         
+
 
          	return !empty($_SESSION['input'][$key])
-         	
+
          	? escape($_SESSION['input'][$key])
-         	
+
          	: null;
-  
+
 	}
 
 }
 
-//Supprimer les données en sesssion dès que l'utilisateur a fini l'inscription 
+//Supprimer les données en sesssion dès que l'utilisateur a fini l'inscription
 if(!function_exists('clear_input_data')){
-	
+
 	function clear_input_data(){
 		if(isset($_SESSION['input'])){
 
@@ -313,7 +313,7 @@ if(!function_exists('clear_input_data')){
 
  }
 
- 
+
  //Gère l'etat actif de nos différents liens de navigation
 
 if(!function_exists('set_active')){
@@ -330,17 +330,17 @@ if(!function_exists('set_active')){
 		}else{
 
 			return "";
-	
+
 	     }
 
 	}
-	
+
 }
 
 // Rechercher toutes les données de l'utilisateur avec son id;
 
 if(!function_exists('find_user_by_id')){
-	
+
 	function find_user_by_id($id){
 
 		global $db;
@@ -348,12 +348,12 @@ if(!function_exists('find_user_by_id')){
 		$q=$db->prepare("SELECT name,pseudo,email,twitter,facebook,github,sex,bio,country,city,avatar,available_for_hiring,created_at FROM users WHERE id=? ");
 
 		$q->execute([$id]);
-        
+
         $data =$q->fetch(PDO::FETCH_OBJ);
 
         $q->closeCursor();
 
-        return $data;	
+        return $data;
 
     }
 
@@ -377,7 +377,7 @@ if(!function_exists('find_user_by_id')){
  if(!function_exists('is_logged_in')){
 
  	function is_logged_in(){
- 		
+
  		return isset($_SESSION['user_id']) || isset($_SESSION['pseudo']);
 
  	}
@@ -387,7 +387,7 @@ if(!function_exists('find_user_by_id')){
 // Rechercher toutes les codes par id;
 
 if(!function_exists('find_code_by_id')){
-	
+
 	function find_code_by_id($id){
 
 		global $db;
@@ -395,13 +395,13 @@ if(!function_exists('find_code_by_id')){
 		 $q=$db->prepare('SELECT code from codes where id = ?');
 
       	 $q->execute([$id]);
-              
+
          $code = $q->fetch(PDO::FETCH_OBJ);
 
 
         $q->closeCursor();
 
-        return $code;	
+        return $code;
 
     }
 
@@ -409,9 +409,9 @@ if(!function_exists('find_code_by_id')){
 
  //Detecte la langue
 if(!function_exists('get_current_locale')){
-	
+
 	function get_current_locale(){
-		
+
 			return $_SESSION['locale'];
 		}
 	}
@@ -420,11 +420,11 @@ if(!function_exists('get_current_locale')){
 //Verifie l'existence de l'avatar
 
 if(!function_exists('check_if_avatar_exist')){
-	
+
 	function check_if_avatar_exist($filename){
 
 		global $db;
-     
+
     if(file_exists($filename)){
     	 $q=$db->prepare("UPDATE users set avatar=? WHERE id=? ");
 	     $q->execute([get_session('avatar'),get_session('user_id')]);
@@ -432,7 +432,7 @@ if(!function_exists('check_if_avatar_exist')){
 	    return true;
 
     }else{
-        
+
          $q=$db->prepare("UPDATE users set avatar='' WHERE id=? ");
 	     $q->execute([get_session('user_id')]);
 
@@ -444,6 +444,6 @@ if(!function_exists('check_if_avatar_exist')){
 
 
 	}
-		
+
 
 }

@@ -1,17 +1,17 @@
 <?php require("bootstrap/locale.php"); ?>
-<?php 
+<?php
 session_start();
 include('filters/guest_filter.php');
 require("includes/init.php");
 
 //Si le formulaie a été soumis ;
 if(isset($_POST['register']))
-  { 
+  {
     if(not_empty(['name','pseudo','email','password','password_confirm']) )
 	    {
 
-	         $errors=[]; 
-	           
+	         $errors=[];
+
 	         extract($_POST);
 
 	         if(mb_strlen($pseudo)<3)
@@ -29,16 +29,16 @@ if(isset($_POST['register']))
 
 	         	$errors[]='<i class="fas fa-exclamation-triangle"></i> Mot de passe  trop court! (Minimum 6 caractères)';
 	         } else{
-               
+
                 if($password != $password_confirm){
-                	
+
                 	$errors[]='<i class="fas fa-exclamation-triangle"></i> Les deux mots de passes ne concordent pas !';
                 }
 	         }
-             
+
              if(is_already_in_use('pseudo',$pseudo,'users'))
              {
-             	$errors[]='<i class="fas fa-exclamation-triangle"></i> Pseudonyme déja utilisé';
+             	$errors[]='<i class="fas fa-exclamation-triangle"></i> nom d\'utilisateur déja utilisé';
              }
              if(is_already_in_use('email',$email,'users'))
              {
@@ -46,7 +46,7 @@ if(isset($_POST['register']))
              }
 
              if(count($errors) == 0){
-               
+
                // Si tout est bon
 
                //Envoi d'un mail d'activation
@@ -59,23 +59,24 @@ if(isset($_POST['register']))
 
              	$password=password_hash($password , PASSWORD_BCRYPT);
 
+
                 $token = sha1($pseudo.$email.$password);
 
-              // On inclut la page activate.tmpl.php sans l'afficher grace à ob_start 
+              // On inclut la page activate.tmpl.php sans l'afficher grace à ob_start
 
                 ob_start();
 
                 require('templates/emails/activation.tmpl.php');
 
                 //On enregistre tout dans $content
-               
+
                 $content = ob_get_clean();
 
                 $headers[] = "From:" . $from;
                 $headers[] = 'MIME-Version: 1.0';
-                $headers[] = 'Content-type: text/html; charset=iso-8859-1';               
-               
-                // On envoi finalement l'email 
+                $headers[] = 'Content-type: text/html; charset=iso-8859-1';
+
+                // On envoi finalement l'email
 
                 if(  mail($to, $subject, $content, implode("\r\n", $headers)))
                 {
@@ -92,17 +93,17 @@ if(isset($_POST['register']))
 
                 	  ));
 
-			           set_flash("Mail d'activation envoyé avec succès <i class=\"fas fa-check-circle\"></i><br>Vérifiez votre boite mail ou jettez un coup d'oeil dans le dossier spam et cliquer sur le lien pour activer votre compte . ",'success'); 
-			                  
+			           set_flash("Mail d'activation envoyé avec succès <i class=\"fas fa-check-circle\"></i><br>Vérifiez votre boite mail ou jettez un coup d'oeil dans le dossier spam et cliquer sur le lien pour activer votre compte . ",'success');
+
 	                   redirect('index');
-                  
+
                 }else {
-                    
+
                     $q=$db->prepare('DELETE FROM users WHERE id = ?');
-                        
+
                         $id = $db->lastInsertId();
                         $q->execute([$id]);
-                      
+
                 	set_flash("<i class=\"fas fa-exclamation-triangle\"> Echec lors de l'envoi de l'email",'info');
                 }
 
@@ -111,8 +112,8 @@ if(isset($_POST['register']))
              }
 
 
-	    } else { 
-	    	
+	    } else {
+
 	    	$errors[] = '<i class="fas fa-exclamation-triangle"></i> Veuillez SVP remplir tous les champs!';
 	    	save_input_data();
 	    }

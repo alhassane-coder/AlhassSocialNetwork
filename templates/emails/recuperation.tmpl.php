@@ -37,7 +37,7 @@
          	text-align: center;
          	border-top: 1px solid rgb(79, 161, 255);
          	margin-top: 10px;
-         	padding: 10px; 
+         	padding: 10px;
          }
          .btn:hover{
          	background: rgb(0, 24, 89);
@@ -57,14 +57,14 @@
 	      Et indiquer le nouveau mot de passe que vous souhaitez!.
        </p>
 
-       <p>Vous n'etes pas à l'origine de cette demande? <br> Ignorez simplement cet email ça n'aura aucun effet mais vous pouvez toutefois changer votre mot de passe <a href="https://alhass.ddns.net/login">Ici</a>
+       <p>Vous n'etes pas à l'origine de cette demande? <br> Ignorez simplement cet email ça n'aura aucun effet mais vous pouvez toutefois changer votre mot de passe <a href="https://alhass.ddns.net/password_update">Ici</a>
        </p>
-	    <a class="btn" href="https://alhass.ddns.net/recuperation?pseudo=<?=$data->pseudo.'&token='.$token ?>">Réinitialiser mon mot de passe </a>
+	    <a class="btn" href="https://alhass.ddns.net/recuperation?p=<?=base64_encode($data->pseudo).'&token='.$token ?>">Réinitialiser mon mot de passe </a>
 	</div>
-    <div class="page-footer"> 
+    <div class="page-footer">
 
-         Copyright &copy Alhass-Social-Network 2020 	
-    
+         Copyright &copy Alhass-Social-Network 2020
+
      </div>
 
 </body>

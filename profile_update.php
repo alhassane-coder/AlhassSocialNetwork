@@ -15,14 +15,13 @@ if( !empty($_GET['id'])){
   if(isset($_POST['update'])){
 
     $errors=[];
- 
+
     if(not_empty(['name','email','city','country','sex','pseudo'])){
 
      extract($_POST);
 
      if(mb_strlen($name)<3)
      {
-
             $errors[]='<i class="fas fa-exclamation-triangle"></i> Nom trop court! (Minimum 3 caractères)';
      }
       if(mb_strlen($pseudo)<3)
@@ -33,25 +32,19 @@ if( !empty($_GET['id'])){
       if(!filter_var($email,FILTER_VALIDATE_EMAIL))
       {
             $errors[]='<i class="fas fa-exclamation-triangle"></i> Addresse email invalide!';
-      }  
-      if(mb_strlen($city)<3)
-     {
+      }
 
-            $errors[]='<i class="fas fa-exclamation-triangle"></i> Nom de Ville trop court! (Minimum 3 caractères)';
-     }
      if(mb_strlen($country)<3)
      {
-
             $errors[]='<i class="fas fa-exclamation-triangle"></i> Nom de Pays trop court! (Minimum 3 caractères)';
      }
 
      if(count($errors) == 0){
-       
+
         // Si tout va bien on mets à jour ses infos en bdd et le redirige vers son profil
 
         $q = $db->prepare('UPDATE users set name=:name ,email=:email, city=:city ,country=:country, sex=:sex,pseudo=:pseudo, github=:github, facebook=:facebook, twitter=:twitter, bio=:bio ,available_for_hiring=:available_for_hire  WHERE id=:id');
         $q->execute(array(
-           
            'name'=>$name,
            'email'=>$email,
            'city'=>$city,
@@ -66,7 +59,7 @@ if( !empty($_GET['id'])){
            'id'=>get_session('user_id')
         ));
 
-      
+
         // Rédirigeons l'utilisateur vers son profil si tout s'est bien passé
 
         set_flash('<i class="fas fa-check-circle"></i>&nbsp;Vos informations ont été mis à jour!');
@@ -82,19 +75,19 @@ if( !empty($_GET['id'])){
     save_input_data();
   }
 
-  
+
 }else{
   clear_input_data();
 }
-	
-  
+
+
 }else{
   redirect('profile_update.php?id='.get_session('user_id'));
 }
 
 
  $user = find_user_by_id($_GET['id']);
- 
+
  if(!$user){
     set_flash("<i class=\"fas fa-exclamation-triangle\"></i>Mauvais identifiant de l'utisateur!",'danger');
     redirect('index');

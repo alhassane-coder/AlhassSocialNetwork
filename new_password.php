@@ -3,7 +3,7 @@ session_start();
 require("includes/init.php");
 if(isset($_POST['change_password'])){
 
-  if(!empty($_GET['pseudo'])){
+  if(!empty($_GET['p'])){
 
   	 if(not_empty(['new_password','new_password_confirm'])){
 
@@ -16,9 +16,9 @@ if(isset($_POST['change_password'])){
 		         	$errors[]='<i class="fas fa-exclamation-triangle"></i> Nouveau mot de passe  trop court! (Minimum 6 caractères)';
 
 		   } else {
-	               
+
 		             if($new_password != $new_password_confirm){
-		                	
+
 		                	$errors[]='<i class="fas fa-exclamation-triangle"></i> Les deux mots de passes ne concordent pas !';
 		             }
 		          }
@@ -31,25 +31,23 @@ if(isset($_POST['change_password'])){
 
 			            	$success = $q->execute([
                                  'new_password'=>password_hash($new_password, PASSWORD_BCRYPT),
-                                 'pseudo'=>$_GET['pseudo']
+                                 'pseudo'=>base64_decode($_GET['p'])
 
 			            	]);
-                             
+
                              if($success){
 
                              	$_SESSION['success']="success";// Variable session pour afficher un succès avec alertify
-
 
                             	redirect('login');
 
                              }
 
-
 			            }
 
 
-		            } else { 
-	    	
+		            } else {
+
 					    	$errors[] = '<i class="fas fa-exclamation-triangle"></i> Veuillez SVP remplir tous les champs!';
 					    	save_input_data();
 	 					  }
@@ -59,7 +57,7 @@ if(isset($_POST['change_password'])){
   	echo "L'utilisateur_n'existe_pas";
 
   }
-	
+
 } else {
 	clear_input_data();
 }
